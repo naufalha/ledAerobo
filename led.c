@@ -40,7 +40,7 @@ void loop(void)
     {
       dmd.clearScreen( true );
       dmd.selectFont(Arial_Black_16);
-      dmd.drawMarquee(Text,strlen("Pintu Terbuka"),
+      dmd.drawMarquee(Text,strlen("PintuTerbuka"),
           (PIXELS_PER_COLUMN*DISPLAY_COLUMN_COUNT)-1,0);
       long start=millis();
       long timer=start;
