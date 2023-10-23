@@ -11,7 +11,7 @@
 #define PIXELS_PER_COLUMN    32
 #define PIXELS_PER_ROW        16
 
-
+const int input = 2;
 DMD dmd(DISPLAY_COLUMN_COUNT, DISPLAY_ROW_COUNT);
 char Text[] = "Selamat Datang di DigiWare Unlimited Innovations";
 /*--------------------------------------------------------------------------------------
@@ -21,6 +21,8 @@ char Text[] = "Selamat Datang di DigiWare Unlimited Innovations";
 void ScanDMD()
 {
   dmd.scanDisplayBySPI();
+  pinMode(input, INPUT);
+  
 }
 
 void setup(void)
@@ -33,18 +35,40 @@ void setup(void)
 
 void loop(void)
 {  
-   dmd.clearScreen( true );
-   dmd.selectFont(Arial_Black_16);
-  
-   dmd.drawMarquee(Text,strlen(Text),
+    int signal = digitalRead(input);
+    if (signal == HIGH)
+    {
+      dmd.clearScreen( true );
+      dmd.selectFont(Arial_Black_16);
+      dmd.drawMarquee(Text,strlen("Pintu Terbuka"),
           (PIXELS_PER_COLUMN*DISPLAY_COLUMN_COUNT)-1,0);
-   long start=millis();
-   long timer=start;
-   boolean ret=false;
-   while(!ret){
-     if ((timer+30) < millis()) {
-       ret=dmd.stepMarquee(-1,0); // Geser 1 karakter ke kiri
-       timer=millis();
-     }
-   }     
+      long start=millis();
+      long timer=start;
+      boolean ret=false;
+      while(!ret){
+        if ((timer+30) < millis()) {
+          ret=dmd.stepMarquee(-1,0); // Geser 1 karakter ke kiri
+          timer=millis();
+        }
+      }     
+    }
+    else
+    {
+      dmd.clearScreen( true );
+      dmd.selectFont(Arial_Black_16);
+      dmd.drawMarquee(Text,strlen(Text),
+          (PIXELS_PER_COLUMN*DISPLAY_COLUMN_COUNT)-1,0);
+      long start=millis();
+      long timer=start;
+      boolean ret=false;
+      while(!ret){
+        if ((timer+30) < millis()) {
+          ret=dmd.stepMarquee(1,0); // Geser 1 karakter ke kanan
+          timer=millis();
+        }
+      }     
+    }
+
+
+
 }
